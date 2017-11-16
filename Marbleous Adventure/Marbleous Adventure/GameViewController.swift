@@ -49,7 +49,9 @@ class GameViewController: UIViewController {
     func setupNotifications(){
         NotificationCenter.default.addObserver(self, selector: #selector(willResignActive), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
     }
+    
     
     @objc func willResignActive(n:NSNotification){
         print(#function)

@@ -40,8 +40,8 @@ class MotionMonitor{
                 // #13 affine transfomrs are commonly used on UIView instances
                 self.transform = CGAffineTransform(rotationAngle: CGFloat(self.rotation))
                 
-                print("self.rotation = \(self.rotation)")
-                print("self.gravityVectorNormalized = \(self.gravityVectorNormalized)")
+                //print("self.rotation = \(self.rotation)")
+                //print("self.gravityVectorNormalized = \(self.gravityVectorNormalized)")
                 // print ("self.gravityVector = \(self.gravityVector)")
                 // print("self.gravityVector = \(self.gravityVector)")
             }
