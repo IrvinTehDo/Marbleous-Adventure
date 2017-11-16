@@ -39,14 +39,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     
-    func didBegin(_ contact: SKPhysicsContact) {
-        //Collision Code
-        if !(menuState == MENU_STATE.PLAYING){return}
-        
-        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
-        
-        //do collision comparison
-    }
+    // MARK: Initializer
     
     override func didMove(to view: SKView) {
         let maxAspectRatio: CGFloat = 16.0/9.0
@@ -63,6 +56,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
         
     }
     
+    // MARK: Update
+    
+    override func update(_ currentTime: TimeInterval) {
+        calculateDeltaTime(currentTime: currentTime)
+        // Called before each frame is rendered
+        movePlayer(dt: CGFloat(dt))
+    }
+    
+    // MARK: Events
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        //Collision Code
+        if !(menuState == MENU_STATE.PLAYING){return}
+        
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        
+        //do collision comparison
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //same
+        print("touched")
+        playerNode.physicsBody?.applyForce(CGVector(dx: 0, dy: 10000))
+        
+    }
+    
+    // MARK: Helper Methods
+
     func calculateDeltaTime(currentTime: TimeInterval)
     {
         if lastUpdateTime > 0 {
@@ -92,11 +113,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
         
         //playerNode.position.x += xVelocity * CGFloat(800.0)
         playerNode.physicsBody?.applyForce(CGVector(dx: xVelocity * 200.0, dy: 0))
+        
+        /*
+        if playerNode.physicsBody!.velocity.dy > CGFloat(10000.0){
+            playerNode.physicsBody?.velocity.dy = 10000.0
+        }
+        */
+        
+        if let playerCamera = childNode(withName: "playerCamera") as? SKCameraNode{
+            //print(playerCamera.position)
+            playerCamera.position = playerNode.position
+        }
+        
+        if let playerGround = playerNode.childNode(withName: "playerGround") as? SKNode{
+            playerGround.position = CGPoint(x: playerNode.position.x, y: playerNode.position.y - -27.019)
+        }
+        
+        
     }
+    
 
-    override func update(_ currentTime: TimeInterval) {
-        calculateDeltaTime(currentTime: currentTime)
-        // Called before each frame is rendered
-        movePlayer(dt: CGFloat(dt))
-    }
 }
