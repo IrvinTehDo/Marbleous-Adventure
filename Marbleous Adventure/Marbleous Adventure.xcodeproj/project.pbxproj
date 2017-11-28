@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F2609481FCDB4C500FF37EA /* BlockNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2609471FCDB4C500FF37EA /* BlockNode.swift */; };
 		3F4698EA1FBD2FB900D72CCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4698E91FBD2FB900D72CCF /* AppDelegate.swift */; };
 		3F4698EC1FBD2FB900D72CCF /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F4698EB1FBD2FB900D72CCF /* GameScene.sks */; };
 		3F4698EE1FBD2FB900D72CCF /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F4698ED1FBD2FB900D72CCF /* Actions.sks */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F2609471FCDB4C500FF37EA /* BlockNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockNode.swift; sourceTree = "<group>"; };
 		3F4698E61FBD2FB900D72CCF /* Marbleous Adventure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Marbleous Adventure.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F4698E91FBD2FB900D72CCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F4698EB1FBD2FB900D72CCF /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				3F4698F81FBD2FB900D72CCF /* LaunchScreen.storyboard */,
 				3F4698FB1FBD2FB900D72CCF /* Info.plist */,
 				3F46991F1FBD309300D72CCF /* PlayerNode.swift */,
+				3F2609471FCDB4C500FF37EA /* BlockNode.swift */,
 			);
 			path = "Marbleous Adventure";
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				3F4698F01FBD2FB900D72CCF /* GameScene.swift in Sources */,
 				3F4698F21FBD2FB900D72CCF /* GameViewController.swift in Sources */,
 				3F4699201FBD309300D72CCF /* PlayerNode.swift in Sources */,
+				3F2609481FCDB4C500FF37EA /* BlockNode.swift in Sources */,
 				3F4699221FBD3DEE00D72CCF /* MotionMonitor.swift in Sources */,
 				3F4698EA1FBD2FB900D72CCF /* AppDelegate.swift in Sources */,
 			);

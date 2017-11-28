@@ -9,9 +9,15 @@
 import SpriteKit
 
 class PlayerNode: SKSpriteNode{
+    
+    var canJump = true
+    var groundNode: SKSpriteNode?
+    
     func didMoveToScene() {
         //Draw and setup physicsbodies
-        
+        physicsBody!.categoryBitMask = PhysicsCategory.Player
+        groundNode = childNode(withName:"playerBottom") as! SKSpriteNode
+        groundNode!.physicsBody!.categoryBitMask = PhysicsCategory.PlayerBottom
     }
     
     

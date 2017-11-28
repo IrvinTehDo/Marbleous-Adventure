@@ -25,9 +25,10 @@ enum MENU_STATE{
 struct PhysicsCategory{
     static let None: UInt32 = 0
     static let Player: UInt32 = 0b1
-    static let Block: UInt32 = 0b10
-    static let Goal: UInt32 = 0b100
-    static let Edge: UInt32 = 0b1000
+    static let PlayerBottom: UInt32 = 0b10
+    static let Block: UInt32 = 0b100
+    static let Goal: UInt32 = 0b1000
+    static let Edge: UInt32 = 0b10000
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate {
@@ -49,6 +50,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
         let playableRect = CGRect(x:0, y: playableMargin, width: size.width, height: size.height-playableMargin*2)
         
         playerNode = childNode(withName:"player") as! PlayerNode
+        
+        enumerateChildNodes(withName: "block"){
+            node, _ in
+            node.physicsBody?.contactTestBitMask = PhysicsCategory.Block
+        }
+        
         //To Implement Later
         //physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
         //physicsWorld.contactDelegate = self
@@ -70,15 +77,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
         //Collision Code
         if !(menuState == MENU_STATE.PLAYING){return}
         
-        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
+        
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask{
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        }
+        
+        else{
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        }
+        
+        if firstBody.categoryBitMask == PhysicsCategory.Player && secondBody.categoryBitMask == PhysicsCategory.Block{
+            playerNode.canJump = true
+            print("can jump")
+        }
         
         //do collision comparison
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         //same
-        print("touched")
-        playerNode.physicsBody?.applyForce(CGVector(dx: 0, dy: 10000))
+        if playerNode.canJump{
+            print("jumped")
+            playerNode.physicsBody?.applyForce(CGVector(dx: 0, dy: 10000))
+            playerNode.canJump = false
+        }
+        
         
     }
     
@@ -125,7 +153,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
             playerCamera.position = playerNode.position
         }
         
-        if let playerGround = playerNode.childNode(withName: "playerGround") as? SKNode{
+        if let playerGround = playerNode.childNode(withName: "playerGround"){
             playerGround.position = CGPoint(x: playerNode.position.x, y: playerNode.position.y - -27.019)
         }
         
