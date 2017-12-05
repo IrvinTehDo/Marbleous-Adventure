@@ -27,15 +27,18 @@ struct PhysicsCategory{
     static let Player: UInt32 = 0b1
     static let PlayerBottom: UInt32 = 0b10
     static let Block: UInt32 = 0b100
+    static let MovingBlock: UInt32 = 0b1000
     static let Goal: UInt32 = 0b1000
     static let Edge: UInt32 = 0b10000
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate {
-    
     var playerNode: PlayerNode!
+    var blocks: [BlockNode] = []
+    var movingBlocks: [MovingBlockNode] = []
+    
     var gameState = GAME_STATE.BEGIN
-    var menuState = MENU_STATE.MAIN
+    var menuState = MENU_STATE.PLAYING
     
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
@@ -48,19 +51,65 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
         let playableMargin: CGFloat = (size.height - maxAspectRatioHeight)/2
         
         let playableRect = CGRect(x:0, y: playableMargin, width: size.width, height: size.height-playableMargin*2)
+
+        //physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
+        physicsWorld.contactDelegate = self
         
         playerNode = childNode(withName:"player") as! PlayerNode
+        playerNode.didMoveToScene()
+
         
         enumerateChildNodes(withName: "block"){
             node, _ in
-            node.physicsBody?.contactTestBitMask = PhysicsCategory.Block
+//            node.physicsBody?.categoryBitMask = PhysicsCategory.Block
+//            node.physicsBody?.contactTestBitMask = PhysicsCategory.PlayerBottom
+//            node.physicsBody?.collisionBitMask = PhysicsCategory.Player
+            self.blocks.append(node as! BlockNode)
         }
+        
+        for i in blocks {
+            i.didMoveToScene()
+        }
+        
+        enumerateChildNodes(withName: "movingBlock"){
+            node, _ in
+            self.movingBlocks.append(node as! MovingBlockNode)
+        }
+        
+        for i in movingBlocks{
+            i.didMoveToScene()
+            let moveTo: CGFloat = (i.userData?.value(forKey: "moveTo") as? CGFloat)!
+            let moveFrom: CGFloat = (i.userData?.value(forKey: "moveFrom") as? CGFloat)!
+            let duration: Double = (i.userData?.value(forKey: "duration") as? Double)!
+            let isHorizontal: Bool = (i.userData?.value(forKey: "horizontal") as? Bool)!
+            
+            let actionMoveTo: SKAction!
+            let actionMoveFrom: SKAction!
+            
+            if isHorizontal{
+                actionMoveTo = SKAction.moveTo(x: i.position.x + moveTo, duration: TimeInterval(duration))
+                actionMoveFrom = SKAction.moveTo(x: i.position.x + moveFrom, duration: TimeInterval(duration))
+            }
+            else{
+                actionMoveTo = SKAction.moveTo(y: i.position.y + moveTo, duration: TimeInterval(duration))
+                actionMoveFrom = SKAction.moveTo(y: i.position.y + moveFrom, duration: TimeInterval(duration))
+            }
+            //i.run(SKAction.sequence([actionMoveTo, actionMoveFrom]))
+            i.run(SKAction.repeatForever(SKAction.sequence([actionMoveTo, actionMoveFrom])))
+            
+        }
+        
+        if let groundNode = childNode(withName: "playerBottom") as? SKSpriteNode{
+            groundNode.physicsBody?.categoryBitMask = PhysicsCategory.PlayerBottom
+            groundNode.physicsBody?.contactTestBitMask = PhysicsCategory.Block | PhysicsCategory.MovingBlock
+            groundNode.physicsBody?.collisionBitMask = PhysicsCategory.None
+        }
+        
         
         //To Implement Later
         //physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
         //physicsWorld.contactDelegate = self
         //physicsBody!.categoryBitMask = PhysicsCategory.Edge
-        
     }
     
     // MARK: Update
@@ -77,22 +126,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
         //Collision Code
         if !(menuState == MENU_STATE.PLAYING){return}
         
-        var firstBody: SKPhysicsBody
-        var secondBody: SKPhysicsBody
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
-        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask{
-            firstBody = contact.bodyA
-            secondBody = contact.bodyB
-        }
-        
-        else{
-            firstBody = contact.bodyA
-            secondBody = contact.bodyB
-        }
-        
-        if firstBody.categoryBitMask == PhysicsCategory.Player && secondBody.categoryBitMask == PhysicsCategory.Block{
+        if  collision == PhysicsCategory.PlayerBottom | PhysicsCategory.Block{
             playerNode.canJump = true
             print("can jump")
+        }
+        
+        else if collision == PhysicsCategory.PlayerBottom | PhysicsCategory.MovingBlock{
+            playerNode.canJump = true
+            print("can jump on moving")
+        }
+        
+        if collision == PhysicsCategory.Block | PhysicsCategory.MovingBlock{
+            print("block to block")
         }
         
         //do collision comparison
@@ -102,8 +149,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         //same
         if playerNode.canJump{
-            print("jumped")
-            playerNode.physicsBody?.applyForce(CGVector(dx: 0, dy: 10000))
+            playerNode.physicsBody?.velocity = CGVector(dx: (playerNode.physicsBody?.velocity.dx)!, dy: 0)
+            playerNode.physicsBody?.applyForce(CGVector(dx: 0, dy: 15000))
             playerNode.canJump = false
         }
         
@@ -153,10 +200,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate 
             playerCamera.position = playerNode.position
         }
         
-        if let playerGround = playerNode.childNode(withName: "playerGround"){
-            playerGround.position = CGPoint(x: playerNode.position.x, y: playerNode.position.y - -27.019)
+        //playerNode.groundNode?.position = CGPoint(x: playerNode.position.x, y: playerNode.position.y - 27)
+        if let groundNode = childNode(withName: "playerBottom") as? SKSpriteNode{
+            groundNode.position = CGPoint(x: playerNode.position.x, y: playerNode.position.y - 28)
         }
-        
         
     }
     

@@ -11,13 +11,16 @@ import SpriteKit
 class PlayerNode: SKSpriteNode{
     
     var canJump = true
-    var groundNode: SKSpriteNode?
+    var groundNode: SKNode?
     
     func didMoveToScene() {
         //Draw and setup physicsbodies
-        physicsBody!.categoryBitMask = PhysicsCategory.Player
-        groundNode = childNode(withName:"playerBottom") as! SKSpriteNode
-        groundNode!.physicsBody!.categoryBitMask = PhysicsCategory.PlayerBottom
+        physicsBody?.categoryBitMask = PhysicsCategory.Player
+        physicsBody?.contactTestBitMask = PhysicsCategory.None
+        physicsBody?.collisionBitMask = PhysicsCategory.Block | PhysicsCategory.MovingBlock
+        
+        //groundNode = childNode(withName:"playerBottom")
+        //groundNode!.physicsBody?.categoryBitMask = PhysicsCategory.PlayerBottom
     }
     
     

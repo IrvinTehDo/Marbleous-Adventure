@@ -20,6 +20,7 @@
 		3F4699101FBD2FB900D72CCF /* Marbleous_AdventureUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F46990F1FBD2FB900D72CCF /* Marbleous_AdventureUITests.swift */; };
 		3F4699201FBD309300D72CCF /* PlayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F46991F1FBD309300D72CCF /* PlayerNode.swift */; };
 		3F4699221FBD3DEE00D72CCF /* MotionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4699211FBD3DEE00D72CCF /* MotionMonitor.swift */; };
+		CEE787831FD6384300AFAAB5 /* MovingBlockNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE787821FD6384300AFAAB5 /* MovingBlockNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		3F4699111FBD2FB900D72CCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F46991F1FBD309300D72CCF /* PlayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerNode.swift; sourceTree = "<group>"; };
 		3F4699211FBD3DEE00D72CCF /* MotionMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionMonitor.swift; sourceTree = "<group>"; };
+		CEE787821FD6384300AFAAB5 /* MovingBlockNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingBlockNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				3F4698FB1FBD2FB900D72CCF /* Info.plist */,
 				3F46991F1FBD309300D72CCF /* PlayerNode.swift */,
 				3F2609471FCDB4C500FF37EA /* BlockNode.swift */,
+				CEE787821FD6384300AFAAB5 /* MovingBlockNode.swift */,
 			);
 			path = "Marbleous Adventure";
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				3F4699201FBD309300D72CCF /* PlayerNode.swift in Sources */,
 				3F2609481FCDB4C500FF37EA /* BlockNode.swift in Sources */,
 				3F4699221FBD3DEE00D72CCF /* MotionMonitor.swift in Sources */,
+				CEE787831FD6384300AFAAB5 /* MovingBlockNode.swift in Sources */,
 				3F4698EA1FBD2FB900D72CCF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
