@@ -11,6 +11,7 @@ import SpriteKit
 class BlockNode: SKSpriteNode{
     func didMoveToScene(){
         physicsBody?.categoryBitMask = PhysicsCategory.Block
-        
+        physicsBody?.contactTestBitMask = PhysicsCategory.PlayerBottom | PhysicsCategory.MovingBlock
+        physicsBody?.collisionBitMask = PhysicsCategory.Player
     }
 }
